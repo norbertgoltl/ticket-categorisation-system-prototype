@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ticket kategóriák – Prototípus</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1.25rem;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    header p {
+      margin-top: 0.4rem;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .note {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: #92400e;
+      margin-bottom: 2rem;
+    }
+
+    .group {
+      margin-bottom: 2rem;
+    }
+
+    .group-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+    }
+
+    .category {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 0.875rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .category-id {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      font-family: monospace;
+      flex-shrink: 0;
+    }
+
+    .category-name {
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .category-description {
+      font-size: 0.825rem;
+      color: #4b5563;
+      line-height: 1.55;
+    }
+
+    .summary {
+      margin-top: 2.5rem;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1.5rem;
+    }
+
+    .summary h2 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.825rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      background: #f3f4f6;
+      color: #374151;
+      font-weight: 600;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+    }
+
+    td:first-child {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #f9fafb;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Ticket kategóriák</h1>
+      <p>A prototípus 18 kategóriával dolgozik – média ügynökség (rádió, TV, internet) kontextusban.</p>
+    </header>
+
+    <div class="note">
+      Az embedding alapú besorolás pontossága a kategória-leírások részletességétől függ. Éles rendszerben a leírások gondos megírása és karbantartása kulcsfontosságú.
+    </div>
+
+    <!-- Műsorszórás -->
+    <div class="group">
+      <div class="group-title">Műsorszórás és adástechnika</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-01</span>
+          <span class="category-name">Rádió adásszünet</span>
+        </div>
+        <div class="category-description">Rádióadás kiesése, megszakadása vagy zajos, torz vételminőség. Tipikus esetek: FM adó meghibásodása, stúdió-adó összeköttetés elvesztése, senderen lévő jelerősség csökkenése, rövid időre kieső adás, teljesen néma adás.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-02</span>
+          <span class="category-name">TV adásszünet</span>
+        </div>
+        <div class="category-description">Televíziós adás kiesése, kép- vagy hangcsatorna elvesztése, torz videojel. Tipikus esetek: műholdas jelvesztés, kábeles továbbítási hiba, DVB-T jelkiesés, feketére váló képernyő adás közben, hang nélküli videó.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-03</span>
+          <span class="category-name">Online streaming hiba</span>
+        </div>
+        <div class="category-description">Internetes élő közvetítés vagy on-demand tartalom lejátszási problémái. Tipikus esetek: stream nem indul el, pufferelés, lejátszó hibakód, CDN elérési hiba, HLS/DASH folyam megszakadása, nem töltődik be a videó a weboldalon.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-07</span>
+          <span class="category-name">Műsorrend és ütemezés</span>
+        </div>
+        <div class="category-description">Műsorfolyam ütemezésével kapcsolatos problémák és módosítási igények. Tipikus esetek: műsor nem a megfelelő időpontban ment adásba, ismétlés elmaradt, élő műsor időpontja ütközik, műsorterv feltöltési hiba, automatikus ütemező nem fut le.</div>
+      </div>
+    </div>
+
+    <!-- Hirdetés -->
+    <div class="group">
+      <div class="group-title">Hirdetés és kampányok</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-04</span>
+          <span class="category-name">Hirdetés megjelenési hiba</span>
+        </div>
+        <div class="category-description">Reklámok nem jelennek meg a megfelelő időben, helyen vagy formátumban. Tipikus esetek: hirdetési blokk kihagyása adásban, online banner nem töltődik be, pre-roll videóreklám nem játszik le, rossz célcsoportnak megjelenő hirdetés, hirdetés duplikáltan jelenik meg.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-05</span>
+          <span class="category-name">Hirdetési kampány beállítás</span>
+        </div>
+        <div class="category-description">Új hirdetési kampány létrehozása, módosítása vagy törlése. Tipikus esetek: kampány időzítésének megváltoztatása, célcsoport beállítás módosítása, kreatív anyag cseréje, büdzsé módosítás, kampány megállítása vagy indítása.</div>
+      </div>
+    </div>
+
+    <!-- Tartalom -->
+    <div class="group">
+      <div class="group-title">Tartalom és szerkesztőség</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-06</span>
+          <span class="category-name">Tartalom feltöltési probléma</span>
+        </div>
+        <div class="category-description">Videó, audio vagy egyéb médiatartalom feltöltési hibái a belső rendszerekbe. Tipikus esetek: feltöltés megszakad, fájlformátum nem támogatott, fájlméret túllépése, metaadat-hiba feltöltéskor, tartalomkezelő rendszer hibája.</div>
+      </div>
+    </div>
+
+    <!-- IT -->
+    <div class="group">
+      <div class="group-title">IT infrastruktúra</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-08</span>
+          <span class="category-name">IT infrastruktúra és hálózat</span>
+        </div>
+        <div class="category-description">Belső hálózati, szerver vagy infrastrukturális problémák. Tipikus esetek: VPN nem csatlakozik, belső szerver nem érhető el, irodai internet kiesés, tűzfal blokkolás, hálózati meghajtó nem érhető el, DNS feloldási hiba.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-09</span>
+          <span class="category-name">Számítógép és eszköz hiba</span>
+        </div>
+        <div class="category-description">Munkaállomások, laptopok, mobil eszközök hardver vagy szoftver problémái. Tipikus esetek: számítógép nem indul, szoftver összeomlik, nyomtató nem működik, perifériák nem csatlakoznak, operációs rendszer frissítési hiba.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-14</span>
+          <span class="category-name">Hozzáférés és jogosultság</span>
+        </div>
+        <div class="category-description">Belső rendszerekhez való hozzáférési kérelmek és problémák. Tipikus esetek: elfelejtett jelszó, hozzáférés megtagadva, új rendszer hozzáférés igénylése, jogosultság szint módosítása, fiók zárolás feloldása.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-18</span>
+          <span class="category-name">Belső kommunikációs eszköz</span>
+        </div>
+        <div class="category-description">Email, chat, videokonferencia és egyéb belső kommunikációs eszközök problémái. Tipikus esetek: email nem megy el, Teams/Slack nem csatlakozik, videóhívás hangja nem működik, levelezési lista hiba, naptár nem szinkronizál.</div>
+      </div>
+    </div>
+
+    <!-- Pénzügy -->
+    <div class="group">
+      <div class="group-title">Pénzügy és szerződések</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-10</span>
+          <span class="category-name">Számlázási probléma</span>
+        </div>
+        <div class="category-description">Számlák, kifizetések, pénzügyi reklamációk. Tipikus esetek: hibás számla érkezett, túlszámlázás, elmaradt jóváírás, számlázási időszak eltérés, díjcsomag nem megfelelő, kifizetés nem érkezett meg.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-11</span>
+          <span class="category-name">Szerződés és ajánlat</span>
+        </div>
+        <div class="category-description">Szerződéskötéssel, módosítással vagy megszüntetéssel kapcsolatos ügyek. Tipikus esetek: új szerződés igénylése, meglévő szerződés módosítása, szerződés felmondása, ajánlatkérés, szerződéses feltételek tisztázása.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-12</span>
+          <span class="category-name">Jogkezelés és licensz</span>
+        </div>
+        <div class="category-description">Szerzői jogi, zenei jogdíj és tartalomlicensz ügyek. Tipikus esetek: zenelejátszási jogdíj elszámolás, tartalom jogosulatlan felhasználása, licenszszerződés megújítása, ARTISJUS bejelentés, külföldi tartalom sugárzási jogának megszerzése.</div>
+      </div>
+    </div>
+
+    <!-- HR -->
+    <div class="group">
+      <div class="group-title">HR és belső adminisztráció</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-13</span>
+          <span class="category-name">HR és munkaviszony</span>
+        </div>
+        <div class="category-description">Emberi erőforrással kapcsolatos belső ügyek. Tipikus esetek: szabadságigénylés, bérszámfejtési kérdés, munkaidő-nyilvántartás hiba, beléptetés új munkavállaló esetén, kiléptetési folyamat, cafeteria igénylés.</div>
+      </div>
+    </div>
+
+    <!-- Online -->
+    <div class="group">
+      <div class="group-title">Online jelenlét és ügyfélszolgálat</div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-15</span>
+          <span class="category-name">Weboldal és online platform hiba</span>
+        </div>
+        <div class="category-description">A média ügynökség publikus weboldalán vagy online platformjain jelentkező hibák. Tipikus esetek: weboldal nem töltődik be, 404-es hiba, bejelentkezési hiba a portálon, keresés nem működik, mobilon nem jelenik meg megfelelően.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-16</span>
+          <span class="category-name">Közösségi média</span>
+        </div>
+        <div class="category-description">Facebook, Instagram, YouTube, TikTok és egyéb közösségi platformokkal kapcsolatos ügyek. Tipikus esetek: posztolási hiba, videófeltöltés sikertelen, kommentmoderálási probléma, hirdetési fiók felfüggesztés, analitika nem frissül.</div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-id">cat-17</span>
+          <span class="category-name">Ügyfélpanasz és reklamáció</span>
+        </div>
+        <div class="category-description">Külső ügyfelek által benyújtott panaszok és reklamációk kezelése. Tipikus esetek: ügyfél elégedetlen a hirdetés teljesítményével, téves tartalom ment adásba az ügyfél kampányában, ügyfél nem kapott visszajelzést, ügyfél adatai hibásak a rendszerben.</div>
+      </div>
+    </div>
+
+    <!-- Összesítő táblázat -->
+    <div class="summary">
+      <h2>Összesítés</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Kategória</th>
+            <th>Terület</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>cat-01</td><td>Rádió adásszünet</td><td>Műsorszórás</td></tr>
+          <tr><td>cat-02</td><td>TV adásszünet</td><td>Műsorszórás</td></tr>
+          <tr><td>cat-03</td><td>Online streaming hiba</td><td>Műsorszórás</td></tr>
+          <tr><td>cat-04</td><td>Hirdetés megjelenési hiba</td><td>Hirdetés</td></tr>
+          <tr><td>cat-05</td><td>Hirdetési kampány beállítás</td><td>Hirdetés</td></tr>
+          <tr><td>cat-06</td><td>Tartalom feltöltési probléma</td><td>Tartalom</td></tr>
+          <tr><td>cat-07</td><td>Műsorrend és ütemezés</td><td>Műsorszórás</td></tr>
+          <tr><td>cat-08</td><td>IT infrastruktúra és hálózat</td><td>IT</td></tr>
+          <tr><td>cat-09</td><td>Számítógép és eszköz hiba</td><td>IT</td></tr>
+          <tr><td>cat-10</td><td>Számlázási probléma</td><td>Pénzügy</td></tr>
+          <tr><td>cat-11</td><td>Szerződés és ajánlat</td><td>Pénzügy</td></tr>
+          <tr><td>cat-12</td><td>Jogkezelés és licensz</td><td>Pénzügy</td></tr>
+          <tr><td>cat-13</td><td>HR és munkaviszony</td><td>HR</td></tr>
+          <tr><td>cat-14</td><td>Hozzáférés és jogosultság</td><td>IT</td></tr>
+          <tr><td>cat-15</td><td>Weboldal és online platform hiba</td><td>Online</td></tr>
+          <tr><td>cat-16</td><td>Közösségi média</td><td>Online</td></tr>
+          <tr><td>cat-17</td><td>Ügyfélpanasz és reklamáció</td><td>Ügyfélszolgálat</td></tr>
+          <tr><td>cat-18</td><td>Belső kommunikációs eszköz</td><td>IT</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      Ticket kategorizáló prototípus – csak tesztelési célra
+    </footer>
+
+  </div>
+</body>
+</html>
