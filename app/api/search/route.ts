@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateEmbedding } from "@/lib/embeddings";
 import { cosineSimilarity } from "@/lib/similarity";
-import { getCachedCategories, isCacheReady } from "@/lib/cache";
 import { createLogEntry } from "@/lib/logger";
 import { searchWithLLM } from "@/lib/llm";
+import { ensureCacheReady } from "@/lib/setup";
 import { LogEntry, SearchRequest, SearchResponse } from "@/types";
 
 const SEMANTIC_THRESHOLD = 0.40;
@@ -20,14 +20,16 @@ export async function POST(req: NextRequest) {
     )
   );
 
-  if (!isCacheReady()) {
-    return NextResponse.json(
-      { success: false, error: "Kategóriák még nincsenek betöltve." },
-      { status: 503 }
-    );
+  // Cache betöltés – cold start esetén automatikusan újragenerálja
+  let cachedCategories;
+  try {
+    const { categories, logs: setupLogs } = await ensureCacheReady();
+    cachedCategories = categories;
+    logs.push(...setupLogs);
+  } catch (error) {
+    logs.push(createLogEntry("SETUP", "Cache betöltés sikertelen", String(error)));
+    return NextResponse.json({ success: false, logEntries: logs }, { status: 500 });
   }
-
-  const cachedCategories = getCachedCategories()!;
 
   // ── SZEMANTIKUS MÓD ──────────────────────────────────────────────────────────
   if (mode === "semantic") {
