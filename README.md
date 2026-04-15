@@ -13,6 +13,7 @@ Média ügynökségi ticket rendszer kategorizáló moduljának prototípusa. A 
 - Threshold alapú visszautasítás – ha a rendszer nem tud egyértelmű kategóriát találni, pontosítást kér
 - Leírás módosítása után automatikus újrakeresés
 - Részletes rendszernapló fejlesztői és elemzési célra
+- Jelszóvédelem – az oldal csak belépés után érhető el
 
 ---
 
@@ -53,10 +54,14 @@ A felhasználó szövege és az összes kategória neve + leírása egy OpenAI c
 
 ```
 /
+├── middleware.ts                 # Jelszóvédelem – minden kérés előtt fut
 ├── app/
 │   ├── page.tsx                  # Főoldal (UI)
 │   ├── globals.css               # Tailwind CSS 4 alap stílusok
+│   ├── login/
+│   │   └── page.tsx              # Bejelentkezési oldal
 │   └── api/
+│       ├── auth/route.ts         # Jelszó ellenőrzés, session cookie
 │       ├── setup/route.ts        # Kategóriák embedding generálása
 │       ├── search/route.ts       # Keresés (szemantikus vagy LLM)
 │       └── submit/route.ts       # Jegy beküldése
@@ -66,10 +71,13 @@ A felhasználó szövege és az összes kategória neve + leírása egy OpenAI c
 │   ├── embeddings.ts             # OpenAI embedding hívás
 │   ├── similarity.ts             # Cosine similarity számítás
 │   ├── cache.ts                  # Embedding cache (szerver memória)
+│   ├── setup.ts                  # Megosztott cache inicializáló logika
 │   ├── llm.ts                    # OpenAI chat completion alapú keresés
 │   └── logger.ts                 # Log bejegyzés helper
+├── public/
+│   └── categories.html           # Kategóriák listája (jelszó nélkül elérhető)
 ├── types.ts                      # TypeScript típusdefiníciók
-├── .env.local                    # API kulcs (nem kerül verziókezelőbe)
+├── .env.local                    # API kulcsok (nem kerül verziókezelőbe)
 └── README.md
 ```
 
@@ -83,12 +91,13 @@ A felhasználó szövege és az összes kategória neve + leírása egy OpenAI c
 npm install openai
 ```
 
-### 2. Környezeti változó beállítása
+### 2. Környezeti változók beállítása
 
 Hozd létre a `.env.local` fájlt a projekt gyökerében:
 
 ```env
 OPENAI_API_KEY=sk-...
+PROTOTYPE_PASSWORD=...
 ```
 
 ### 3. Fejlesztői szerver indítása
@@ -99,15 +108,39 @@ npm run dev
 
 Az alkalmazás elérhető: [http://localhost:3000](http://localhost:3000)
 
+> **Megjegyzés:** Ha a dev szerver hosszabb futás után heap out of memory hibával leáll, add hozzá a `package.json`-hoz:
+> ```json
+> "scripts": {
+>   "dev": "NODE_OPTIONS='--max-old-space-size=8192' next dev"
+> }
+> ```
+
+---
+
+## Jelszóvédelem
+
+Az oldal bejelentkezést igényel. A session cookie 10 percig él, utána újra be kell lépni.
+
+A jelszót a `PROTOTYPE_PASSWORD` környezeti változóban kell megadni – lokálisan a `.env.local` fájlban, Vercelen a projekt **Settings → Environment Variables** menüpontban.
+
+A `/public/categories.html` oldal jelszó nélkül is elérhető, mivel statikus fájlként van kiszolgálva.
+
 ---
 
 ## API route-ok
 
 | Route | Metódus | Leírás |
 |---|---|---|
+| `/api/auth` | `POST` | Jelszó ellenőrzés, session cookie beállítása (10 perc) |
 | `/api/setup` | `GET` | Kategóriák embedding vektorainak generálása. App indulásakor egyszer fut le, az eredmény szerver memóriában cache-elődik. |
-| `/api/search` | `POST` | Keresés futtatása. Body: `{ description: string, mode: "semantic" \| "llm" }` |
+| `/api/search` | `POST` | Keresés futtatása. Body: `{ description: string, mode: "semantic" \| "llm" }`. Cold start esetén automatikusan újraépíti a cache-t. |
 | `/api/submit` | `POST` | Jegy beküldése. Body: `{ description, categoryId, categoryName, mode, searchMode }` |
+
+---
+
+## Cold start kezelés (Vercel)
+
+Vercel serverless környezetben a szerver memória nem perzisztens – hideghívás esetén a cache törlődik. A `/api/search` route ezért nem 503-as hibával tér vissza, hanem automatikusan újraépíti a cache-t a `lib/setup.ts`-ben lévő `ensureCacheReady()` függvény segítségével. A rendszernaplóban `"Cache üres (cold start)"` bejegyzés jelzi, ha ez történt.
 
 ---
 
@@ -146,4 +179,4 @@ A prototípus architektúrája megegyezik a végleges rendszer architektúrájá
 | Embedding újragenerálás | Manuális (szerver újraindítás) | Automatikus, ha kategória változik |
 | Log tárolás | Csak UI | Adatbázis + elemzési pipeline |
 | Backend | Next.js API route-ok | Meghatározandó |
-| Authentikáció | Nincs | Meghatározandó |
+| Authentikáció | Egyszerű jelszó + cookie | Meghatározandó |
