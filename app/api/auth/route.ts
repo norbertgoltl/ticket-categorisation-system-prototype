@@ -1,0 +1,21 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(req: NextRequest) {
+  const { password } = await req.json();
+
+  if (password !== process.env.PROTOTYPE_PASSWORD) {
+    return NextResponse.json({ success: false }, { status: 401 });
+  }
+
+  const response = NextResponse.json({ success: true });
+
+  response.cookies.set("prototype_auth", "1", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 10, // 10 perc
+    path: "/",
+  });
+
+  return response;
+}
