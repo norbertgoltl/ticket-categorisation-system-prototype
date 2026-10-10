@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { password } = await req.json();
 
-  if (password !== process.env.PROTOTYPE_PASSWORD) {
+  const expected = process.env.PROTOTYPE_PASSWORD;
+
+  // Fail-closed: ha nincs beállítva jelszó, senki sem léphet be.
+  if (!expected || password !== expected) {
     return NextResponse.json({ success: false }, { status: 401 });
   }
 
